@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+# ===== Title Suffixer ビルドスクリプト (Chrome拡張) =====
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
+APP_NAME="title-suffixer"
+ZIP_NAME="${APP_NAME}.zip"
+
+# 共通スクリプト読み込み
+source "$SCRIPT_DIR/../build-common/version.sh"
+
+# バージョン読み込み
+VERSION=$(version_read)
+
+echo "🔧 ${APP_NAME} v${VERSION} をビルド中..."
+
+# manifest.json にバージョンを埋め込み
+sed -i '' "s/\"version\": \"[^\"]*\"/\"version\": \"$VERSION\"/" manifest.json
+echo "  ✓ manifest.json を v${VERSION} に更新しました"
+
+# content.js のバージョンを更新
+sed -i '' "s/v[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/v$VERSION/" content.js 2>/dev/null || true
+echo "  ✓ content.js を更新しました"
+
+# zip作成
+rm -f "$ZIP_NAME"
+zip -r "$ZIP_NAME" . \
+    -x "*.git*" \
+    -x "*.DS_Store" \
+    -x "*.zip" \
+    -x "*.sh" \
+    -x "version.txt" \
+    -x "README.md" \
+    -x ".gitignore"
+
+echo ""
+echo "✅ ${ZIP_NAME} (v${VERSION}) を作成しました"
+echo "📦 場所: $(pwd)/${ZIP_NAME}"
+
+# 次回用バージョン保存
+echo ""
+echo "📝 次回用バージョンを更新しています..."
+version_save_next "$VERSION"
