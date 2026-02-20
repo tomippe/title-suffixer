@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Title Suffixer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "タブタイトルの末尾に任意の文字列を追加します",
   "permissions": [
     "storage"

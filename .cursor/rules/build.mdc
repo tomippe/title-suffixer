@@ -1,0 +1,23 @@
+---
+description: Title Suffixer のビルド仕様
+globs: build.sh
+alwaysApply: false
+---
+
+# Title Suffixer ビルド仕様
+
+共通のビルドシステムは `../build-common/` を参照。
+
+## 概要
+
+- **種別**: Chrome拡張機能
+- **ビルド**: manifest.json + content.js にバージョン埋め込み → ZIP 作成
+- **配布**: Chrome Web Store に手動アップロード
+
+## 固有設定
+
+- ZIP: `title-suffixer.zip`
+- バージョン埋め込み先: `manifest.json`, `content.js`
+- 除外: `.git*`, `.DS_Store`, `*.zip`, `*.sh`, `version.txt`, `README.md`, `.gitignore`
+- FTPアップロード: なし
+- WPページ: あり
